@@ -9,6 +9,14 @@ void Compartment::setCurrentTime(const int currentTime){
     this->currentTime = currentTime;
 }
 
+double Compartment::getInfectiousScaling(){
+    return this->infectiousScaling;
+}
+
+void Compartment::setInfectiousScaling(double inValue){
+    this->infectiousScaling = inValue;
+}
+
 void Compartment::infectionCycle(){
     for(auto currentAgent: currentAgentSet){
         switch(currentAgent->getState()){
@@ -25,7 +33,7 @@ void Compartment::infectionCycle(){
                 for(auto targetAgent: currentAgentSet){
                     if(targetAgent->getState()==this->stateMap.at("Uninfected") && currentAgent->checkToInfect(targetAgent,this->randDrivers->InfectionCheckGenerator()) ){
                         int infectiousTime = this->currentTime+this->randDrivers->InfectiousTimeGenerator();
-                        double infectiousStrength = this->randDrivers->InfectiousStrengthGenerator();
+                        double infectiousStrength = this->randDrivers->InfectiousStrengthGenerator()*this->infectiousScaling;
                         targetAgent->getInfected(infectiousTime, infectiousStrength, this->stateMap.at("Infected"));
                     }
                 }

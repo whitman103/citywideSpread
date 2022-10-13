@@ -16,9 +16,12 @@ class Compartment{
     private:
     int currentTime;
     RandDrivers* randDrivers;
+    double infectiousScaling;
 
     public:
     void setCurrentTime(const int currentTime);
+    double getInfectiousScaling();
+    void setInfectiousScaling(double inValue);
     std::vector<std::shared_ptr<Agent> > currentAgentSet;
     Compartment(const int size, RandDrivers* randDrivers);
     const StateMap stateMap;
