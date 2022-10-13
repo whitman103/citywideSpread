@@ -9,6 +9,10 @@ void Compartment::setCurrentTime(const int currentTime){
     this->currentTime = currentTime;
 }
 
+int Compartment::getCurrentTime(){
+    return this->currentTime;
+}
+
 double Compartment::getInfectiousScaling(){
     return this->infectiousScaling;
 }
@@ -17,8 +21,16 @@ void Compartment::setInfectiousScaling(double inValue){
     this->infectiousScaling = inValue;
 }
 
+std::valarray<int> Compartment::getStateCounts(){
+    std::valarray<int> sumCounts(0, this->stateMap.size());
+    for(auto currentAgent: this->currentAgentSet){
+        sumCounts[currentAgent->getState()]++;
+    }
+    return sumCounts;
+}
+
 void Compartment::infectionCycle(){
-    for(auto currentAgent: currentAgentSet){
+    for(auto currentAgent: this->currentAgentSet){
         switch(currentAgent->getState()){
             case 1:
             {
