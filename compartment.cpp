@@ -22,9 +22,8 @@ void Compartment::infectionCycle(){
             break;
             case 2:
             {   
-                std::cout<<"Happening"<<std::endl;
                 for(auto targetAgent: currentAgentSet){
-                    if(targetAgent->getState()==this->stateMap.at("Uninfected") && currentAgent->checkToInfect(targetAgent,0) ){
+                    if(targetAgent->getState()==this->stateMap.at("Uninfected") && currentAgent->checkToInfect(targetAgent,this->randDrivers->InfectionCheckGenerator()) ){
                         int infectiousTime = this->currentTime+this->randDrivers->InfectiousTimeGenerator();
                         double infectiousStrength = this->randDrivers->InfectiousStrengthGenerator();
                         targetAgent->getInfected(infectiousTime, infectiousStrength, this->stateMap.at("Infected"));

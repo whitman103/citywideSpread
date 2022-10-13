@@ -20,6 +20,7 @@ class Agent{
     int getState();
     void setInfectiousStrength(const double inValue);
     void setRecoveryTime(const int inValue);
+    int getRecoveryTime();
     void setInfectiousTime(const int inValue);
     std::tuple<int,int> position;
     Agent(int globalIndex, int state);

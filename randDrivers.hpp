@@ -13,6 +13,7 @@ struct RandDrivers{
     RealGenerator InfectiousStrengthGenerator;
     IntGenerator RecoveryTimeGenerator;
     IntGenerator InfectiousTimeGenerator;
+    RealGenerator InfectionCheckGenerator;
 };
 
 #endif

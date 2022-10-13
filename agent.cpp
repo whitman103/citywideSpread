@@ -34,7 +34,7 @@ bool Agent::checkForInfectious(const int currentTime){
 
 bool Agent::checkToInfect(std::shared_ptr<Agent> targetAgent, double randPull = 1){
     double infectionProb = exp(-1.*targetAgent->immuneStrength)*tanh(this->infectiousStrength);
-    std::cout<<infectionProb<<std::endl;
+    std::cout<<infectionProb<<" "<<randPull<<std::endl;
     return infectionProb>randPull;
 }
 
@@ -44,6 +44,10 @@ void Agent::setInfectiousStrength(const double inValue){
 
 void Agent::setRecoveryTime(const int inValue){
     this->timeToRecover = inValue;
+}
+
+int Agent::getRecoveryTime(){
+    return this->timeToRecover;
 }
 
 void Agent::setInfectiousTime(const int inValue){
