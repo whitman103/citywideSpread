@@ -7,6 +7,7 @@
 #include <map>
 #include <string>
 #include <valarray>
+#include <ostream>
 
 using StateMap = std::map<std::string,int>;
 
@@ -32,6 +33,8 @@ class Compartment{
     void initializeCompartment();
 
     void infectionCycle();
+
+    friend std::ostream& operator <<(std::ostream& os, Compartment& compart);
 };
 
 #endif

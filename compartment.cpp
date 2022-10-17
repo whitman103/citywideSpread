@@ -8,6 +8,11 @@ Compartment::Compartment(const int size, RandDrivers* inGenerator, double infect
     currentAgentSet.resize(size);
 };
 
+std::ostream& operator<<(std::ostream& os, Compartment& compart){
+    os<<compart.getCurrentTime()<<std::endl;
+    return os;
+}
+
 void Compartment::initializeCompartment(){
 }
 

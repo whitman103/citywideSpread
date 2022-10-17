@@ -35,10 +35,9 @@ void IOHandler::writeState(Compartment inputCompartment){
 void IOHandler::writeState(std::vector<Compartment> setOfCompartments){
     std::valarray<int> stateVector(setOfCompartments[0].stateMap.size(),0);
     std::cout<<"This is happening"<<std::endl;
-    (*this->outputStream)<<setOfCompartments[0].getCurrentTime()<<" ";
-    std::cout<<setOfCompartments[0].getCurrentTime()<<std::endl;
+    *(this->outputStream)<<setOfCompartments[0].getCurrentTime()<<" ";
     for(auto iterCompartment: setOfCompartments){
         stateVector+=iterCompartment.getStateCounts();
     }
-    (*this->outputStream)<<'\n';
+    *(this->outputStream)<<'\n';
 }

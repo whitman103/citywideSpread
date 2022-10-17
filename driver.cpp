@@ -65,8 +65,8 @@ int main(){
     
     simCity.ioHandle.initStateOutputs(simCity.compartmentList[0]);
 
-    for(auto curCompartment: simCity.compartmentList){
-        (*curCompartment.currentAgentSet[0]).getInfected(randDrivers.InfectiousTimeGenerator(),globalInfectiousStrength,1);
+    for(auto& curCompartment: simCity.compartmentList){
+        curCompartment.currentAgentSet[0]->getInfected(randDrivers.InfectiousTimeGenerator(),globalInfectiousStrength,1);
     }
 
 

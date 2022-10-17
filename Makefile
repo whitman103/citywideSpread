@@ -1,7 +1,7 @@
 CXX = clang++ 
 CXXFLAGS = -O2 -std=c++17 -I/opt/homebrew/include
 
-all: driver agent compartment io city
+all: io city compartment agent driver
 
 agent: agent.cpp
 	$(CXX) $(CXXFLAGS) -c agent.cpp
