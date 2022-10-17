@@ -10,13 +10,14 @@
 class IOHandler{
 
     public:
-    IOHandler(std::string streamName);
+    IOHandler();
+    IOHandler(std::ofstream* outStream);
     ~IOHandler();
     void writeState(std::vector<Compartment> setOfCompartments);
     void writeState(Compartment inputCompartment);
     void initStateOutputs(Compartment inputCompartment);
     private:
-    std::ofstream outputStream;
+    std::ofstream* outputStream;
 };
 
 #endif

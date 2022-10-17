@@ -1,19 +1,22 @@
 CXX = clang++ 
 CXXFLAGS = -O2 -std=c++17 -I/opt/homebrew/include
 
-all: driver agent compartment io
+all: driver agent compartment io city
 
-driver: compartment.o agent.o compartment.cpp agent.cpp 
-	$(CXX) $(CXXFLAGS) -o driver driver.cpp compartment.cpp agent.cpp io.cpp
-
-agent:
+agent: agent.cpp
 	$(CXX) $(CXXFLAGS) -c agent.cpp
 
-compartment: compartment.o agent.o
-	$(CXX) $(CXXFLAGS) -c compartment.cpp agent.hpp randDrivers.hpp
+compartment: agent.o
+	$(CXX) $(CXXFLAGS) -c compartment.cpp
 
 io: compartment.o
-	$(CXX) $(CXXFLAGS) -c io.cpp compartment.hpp
+	$(CXX) $(CXXFLAGS) -c io.cpp
+
+city: compartment.o io.o
+	$(CXX) $(CXXFLAGS) -c city.cpp
+
+driver: agent.o compartment.o io.o city.o
+	$(CXX) $(CXXFLAGS) -o driver driver.cpp agent.cpp compartment.cpp io.cpp city.cpp
 
 clean:
-	rm driver.o compartment.o driver driver.o
+	rm driver driver.o compartment.o driver driver.o

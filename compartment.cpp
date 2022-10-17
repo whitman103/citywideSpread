@@ -1,9 +1,15 @@
 #include "compartment.hpp"
 #include <iostream>
 
-Compartment::Compartment(const int size, RandDrivers* inGenerator) : randDrivers(inGenerator) , stateMap( StateMap({{"Uninfected", 0}, {"Infected", 1}, {"Infectious", 2}, {"Recovered", 3}})) {
+Compartment::Compartment(){
+}
+
+Compartment::Compartment(const int size, RandDrivers* inGenerator, double infectiousScaling) : randDrivers(inGenerator) , stateMap( StateMap({{"Uninfected", 0}, {"Infected", 1}, {"Infectious", 2}, {"Recovered", 3}})), infectiousScaling(infectiousScaling)  {
     currentAgentSet.resize(size);
 };
+
+void Compartment::initializeCompartment(){
+}
 
 void Compartment::setCurrentTime(const int currentTime){
     this->currentTime = currentTime;

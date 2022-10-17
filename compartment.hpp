@@ -26,8 +26,10 @@ class Compartment{
     void setInfectiousScaling(double inValue);
     std::valarray<int> getStateCounts();
     std::vector<std::shared_ptr<Agent> > currentAgentSet;
-    Compartment(const int size, RandDrivers* randDrivers);
+    Compartment();
+    Compartment(const int size, RandDrivers* randDrivers, double infectiousScaling);
     const StateMap stateMap;
+    void initializeCompartment();
 
     void infectionCycle();
 };

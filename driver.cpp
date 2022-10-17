@@ -8,6 +8,7 @@
 #include "compartment.hpp"
 #include "randDrivers.hpp"
 #include "io.hpp"
+#include "city.hpp"
 
 
 int main(){
@@ -15,6 +16,7 @@ int main(){
 
     boost::mt19937 baseRNG(time(NULL));
     boost::uniform_real<> standardUniform(0,1);
+    boost::uniform_real<> immuneStrengh(0,0.1);
 
     boost::uniform_int<> recoveryTime(1,4);
     boost::uniform_int<> infectiousTime(1,3);
@@ -22,30 +24,56 @@ int main(){
     //Make the generators not use the same RNG eventually. 
     RandDrivers randDrivers = {RealGenerator(baseRNG, standardUniform), IntGenerator(baseRNG, recoveryTime), IntGenerator(baseRNG, infectiousTime), RealGenerator(baseRNG,standardUniform)};
 
-    IOHandler outputFile = IOHandler("visualization/test.txt");
+    boost::uniform_int<> compartmentSize(40,80);
+    IntGenerator compartmentSizeGenerator(baseRNG,compartmentSize);
 
-    Compartment testCompartment = Compartment(200, &randDrivers);
-    testCompartment.setInfectiousScaling(0.05);
-    outputFile.initStateOutputs(testCompartment);
+    RealGenerator immuneStrenghGenerator(baseRNG, immuneStrengh);
 
-    for(int i = 0 ; i <testCompartment.currentAgentSet.size();++i){
-        testCompartment.currentAgentSet[i]=std::make_shared<Agent>(i,0);
+    std::vector<std::shared_ptr<Agent>> AgentPool;
+    
+    const int totalAgentNumber(10000);
+    AgentPool.resize(totalAgentNumber);
+    for(int i=0;i<(int)AgentPool.size();++i){
+        AgentPool[i]=std::make_shared<Agent>(i,0,immuneStrenghGenerator());
+    }
+
+    const double globalInfectiousStrength(0.05);
+
+
+    std::ofstream reportStream("NotConnected.txt");
+    City simCity = City(25,&reportStream);
+
+    int currentAgentOffset(0);
+    while(currentAgentOffset<AgentPool.size()){
+        int agentAdd(compartmentSizeGenerator());
+        if((agentAdd+currentAgentOffset)>totalAgentNumber){
+            agentAdd = totalAgentNumber-currentAgentOffset;
+        }
+        Compartment newCompartment = Compartment(agentAdd,&randDrivers,globalInfectiousStrength);
+        newCompartment.setInfectiousScaling(globalInfectiousStrength);
+        newCompartment.currentAgentSet.resize(agentAdd);
+        for(int j=0;j<agentAdd;++j){
+            newCompartment.currentAgentSet[j]=AgentPool[j+currentAgentOffset];
+        }
+        simCity.compartmentList.push_back(newCompartment);
+        currentAgentOffset+=agentAdd;
     }
 
     double initialInfectionFraction(0.05);
-    int numInitInfections(testCompartment.currentAgentSet.size()*initialInfectionFraction);
-    for(int initInfect = 0; initInfect<numInitInfections;++initInfect){
-        testCompartment.currentAgentSet[initInfect]->changeState("Infected",testCompartment.stateMap);
-        testCompartment.currentAgentSet[initInfect]->setInfectiousTime(randDrivers.InfectiousTimeGenerator());
-        testCompartment.currentAgentSet[initInfect]->setInfectiousStrength(testCompartment.getInfectiousScaling()*randDrivers.InfectionCheckGenerator());
+    
+    // Sloppy interobject working right now
+    
+    simCity.ioHandle.initStateOutputs(simCity.compartmentList[0]);
+
+    for(auto curCompartment: simCity.compartmentList){
+        (*curCompartment.currentAgentSet[0]).getInfected(randDrivers.InfectiousTimeGenerator(),globalInfectiousStrength,1);
     }
+
+
+    simCity.runSimulation();
+    reportStream.close();
     
     
-    for(int timeCycle = 0 ;timeCycle<25;timeCycle++){
-        testCompartment.setCurrentTime(timeCycle);
-        testCompartment.infectionCycle();
-        outputFile.writeState(testCompartment);
-    }
 
     return 0;
 }

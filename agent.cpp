@@ -5,11 +5,19 @@
 Agent::Agent(int globalIndex, int state = 0) : globalIndex{globalIndex}, state{state}, infectiousStrength(0), position{std::make_tuple(0,0)}, timeToRecover(0), timeToInfectious(0) {
 };
 
-int Agent::getGlobalIndex(){
+Agent::Agent(int globalIndex, int state =0, double immuneStrength =0) : globalIndex(globalIndex), state{state}, infectiousStrength(0), position{std::make_tuple(0,0)}, timeToInfectious(0), timeToRecover(0), immuneStrength(immuneStrength){
+};
+
+std::ostream& operator<<(std::ostream& os, Agent& agent){
+    os<<"Agent(Index = "<<(agent.getGlobalIndex())<<", State = "<<agent.getState()<<")"<<'\n';
+    return os;
+}
+
+const int Agent::getGlobalIndex(){
     return this->globalIndex;
 }
 
-int Agent::getState(){
+const int Agent::getState(){
     return this->state;
 }
 
