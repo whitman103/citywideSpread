@@ -1,13 +1,13 @@
 #include <iostream>
 #include <memory>
 #include <chrono>
+#include <fstream>
 
 
 
 #include "agent.hpp"
 #include "compartment.hpp"
 #include "randDrivers.hpp"
-#include "io.hpp"
 #include "city.hpp"
 
 
@@ -39,8 +39,8 @@ int main(){
 
     const double globalInfectiousStrength(0.05);
 
-
-    std::ofstream reportStream("NotConnected.txt");
+    std::ofstream reportStream;
+    reportStream.open("visualization/NotConnected.txt");
     City simCity = City(25,&reportStream);
 
     int currentAgentOffset(0);
@@ -63,7 +63,7 @@ int main(){
     
     // Sloppy interobject working right now
     
-    simCity.ioHandle.initStateOutputs(simCity.compartmentList[0]);
+    simCity.initStateOutputs(simCity.compartmentList[0]);
 
     for(auto& curCompartment: simCity.compartmentList){
         curCompartment.currentAgentSet[0]->getInfected(randDrivers.InfectiousTimeGenerator(),globalInfectiousStrength,1);
@@ -71,7 +71,6 @@ int main(){
 
 
     simCity.runSimulation();
-    reportStream.close();
     
     
 

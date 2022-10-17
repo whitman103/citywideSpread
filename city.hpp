@@ -5,7 +5,6 @@
 #include <string>
 
 #include "compartment.hpp"
-#include "io.hpp"
 
 class City{
 
@@ -14,8 +13,13 @@ class City{
 
     public:
     std::vector<Compartment> compartmentList;
-    IOHandler ioHandle;
-    City(const int endT, std::ofstream* outStream);
+    City(const int endT, std::ofstream* streamName);
+    std::ofstream* outStream;
+    void writeState(std::vector<Compartment> setOfCompartments);
+    void writeState(Compartment inputCompartment);
+    void initStateOutputs(Compartment inputCompartment);
+
+    ~City();
 
     void runSimulation();
 };

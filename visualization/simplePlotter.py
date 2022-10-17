@@ -3,7 +3,7 @@
 
 import matplotlib.pyplot as plt
 
-with open('test.txt','r') as inFile:
+with open('NotConnected.txt','r') as inFile:
     labelNames = inFile.readline().strip().split(' ')
     time, labelNames = labelNames[0], labelNames[1:]
     stateTraces={}
@@ -16,7 +16,7 @@ with open('test.txt','r') as inFile:
             stateTraces[stateIndex]['trace'].append(int(stateCount))
 for stateIndex, dataBundle in stateTraces.items():
     plt.plot([i for i in range(len(stateTraces[0]['trace']))],dataBundle['trace'],label=dataBundle['label'])
-plt.title('SEIR Plots for Basic Model')
+plt.title('SEIR Plots for Multiple Non-Connected Model')
 plt.legend()
 plt.show()
         
